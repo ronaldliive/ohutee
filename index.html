@@ -12,7 +12,7 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#"><span class="brandmark">O</span><span>Ohutee</span></a>
-    <div class="top-actions"><span class="status-dot"></span><span>Avaandmete prototüüp</span></div>
+    <div class="top-actions"><span class="status-dot"></span><span id="dataStatus">Andmete laadimine…</span></div>
   </header>
 
   <main>
@@ -20,7 +20,7 @@
       <div class="hero-copy">
         <div class="eyebrow">Eesti liiklusohutus, inimkeeles</div>
         <h1>Kas sinu igapäevane tee on <span>päriselt turvaline?</span></h1>
-        <p>Vali koht või laadi sisse Transpordiameti CSV. Ohutee näitab läheduses juhtunud inimkannatanutega õnnetusi, riskimustreid ja seda, millele tasub tähelepanu pöörata.</p>
+        <p>Vali koht. Ohutee analüüsib automaatselt Transpordiameti värskeid inimkannatanutega liiklusõnnetuste avaandmeid ning näitab läheduses juhtunud õnnetusi ja riskimustreid.</p>
         <div class="searchbox">
           <select id="placeSelect" aria-label="Vali näidiskoht">
             <option value="tallinn">Tallinn · Tartu mnt / Liivalaia</option>
@@ -30,7 +30,7 @@
           </select>
           <button id="analyseBtn">Analüüsi piirkonda</button>
         </div>
-        <div class="microcopy">Näidisvaade kasutab sünteetilisi kirjeid. Pärisandmed saab lisada CSV-failina.</div>
+        <div class="microcopy" id="freshness">Ametlike andmete laadimine…</div>
       </div>
       <div class="hero-card">
         <div class="score-label">Piirkonna ohutase</div>
@@ -53,10 +53,9 @@
           <select id="severityFilter"><option value="all">Kõik juhtumid</option><option value="vigastus">Vigastatuga</option><option value="hukkunu">Hukkunuga</option></select>
         </label>
         <div class="radius-wrap"><div><span>Raadius</span><strong id="radiusValue">1,5 km</strong></div><input id="radius" type="range" min="0.5" max="5" value="1.5" step="0.5"></div>
-        <div class="upload">
-          <input id="csvInput" type="file" accept=".csv,text/csv" hidden>
-          <button id="uploadBtn" class="upload-btn"><span>＋</span> Laadi Transpordiameti CSV</button>
-          <small>CSV peab sisaldama koordinaate. Veerunimed tuvastatakse automaatselt levinud eestikeelsete nimetuste järgi.</small>
+        <div class="upload live-data">
+          <strong>Andmed uuenevad automaatselt</strong>
+          <small>GitHub Actions kontrollib ametlikku Transpordiameti andmestikku iga päev. Kasutaja ei pea faile üles laadima.</small>
         </div>
       </aside>
 
@@ -93,7 +92,7 @@
 
     <section class="source-note">
       <div><span class="source-icon">↗</span></div>
-      <div><strong>Andmeallikas</strong><p>Kontseptsioon põhineb Transpordiameti ja Politsei- ja Piirivalveameti inimkannatanutega liiklusõnnetuste avaandmestikul. Näidisrakenduse sisseehitatud punktid on sünteetilised; CSV üleslaadimise järel arvutatakse vaade kasutaja failist.</p></div>
+      <div><strong>Andmeallikas</strong><p>Rakendus kasutab Transpordiameti avaldatud ja Politsei- ja Piirivalveameti kogutud inimkannatanutega liiklusõnnetuste andmestikku. Andmed laaditakse ametlikust allikast automaatselt ning neid ei sisestata käsitsi.</p></div>
     </section>
   </main>
 
