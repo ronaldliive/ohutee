@@ -17,7 +17,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Paigalda sõltuvused
-        run: pip install requests beautifulsoup4 pyproj
+        run: |
+          pip install requests playwright pyproj
+          playwright install --with-deps chromium
       - name: Laadi ja töötle ametlikud andmed
         run: python scripts/update_data.py
       - name: Salvesta muutunud andmed
