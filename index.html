@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="et">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ohutee — kas sinu igapäevane tee on turvaline?</title>
+  <meta name="description" content="Lihtne liiklusohutuse vaade Eesti inimkannatanutega liiklusõnnetuste avaandmetele." />
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brandmark">O</span><span>Ohutee</span></a>
+    <div class="top-actions"><span class="status-dot"></span><span>Avaandmete prototüüp</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Eesti liiklusohutus, inimkeeles</div>
+        <h1>Kas sinu igapäevane tee on <span>päriselt turvaline?</span></h1>
+        <p>Vali koht või laadi sisse Transpordiameti CSV. Ohutee näitab läheduses juhtunud inimkannatanutega õnnetusi, riskimustreid ja seda, millele tasub tähelepanu pöörata.</p>
+        <div class="searchbox">
+          <select id="placeSelect" aria-label="Vali näidiskoht">
+            <option value="tallinn">Tallinn · Tartu mnt / Liivalaia</option>
+            <option value="tartu">Tartu · Riia / Ringtee</option>
+            <option value="parnu">Pärnu · Tallinna mnt</option>
+            <option value="kuressaare">Kuressaare · Tallinna tn</option>
+          </select>
+          <button id="analyseBtn">Analüüsi piirkonda</button>
+        </div>
+        <div class="microcopy">Näidisvaade kasutab sünteetilisi kirjeid. Pärisandmed saab lisada CSV-failina.</div>
+      </div>
+      <div class="hero-card">
+        <div class="score-label">Piirkonna ohutase</div>
+        <div class="score-row"><div id="score" class="score">68</div><div class="score-suffix">/ 100<br><span>kõrgendatud</span></div></div>
+        <div class="score-bar"><i id="scoreBar"></i></div>
+        <div id="scoreText" class="score-text">Õnnetusi esineb tavalisest rohkem just õhtuse tipptunni ajal ning jalakäijate osalusel.</div>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <aside class="panel controls">
+        <div class="panel-head"><div><span class="kicker">Andmed</span><h2>Filtrid</h2></div><button id="resetBtn" class="text-btn">Lähtesta</button></div>
+        <label>Ajavahemik
+          <select id="yearFilter"><option value="all">Kõik aastad</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select>
+        </label>
+        <label>Liikleja
+          <select id="typeFilter"><option value="all">Kõik liiklejad</option><option value="jalakäija">Jalakäija</option><option value="jalgrattur">Jalgrattur</option><option value="auto">Autos viibinu</option><option value="mootorratas">Mootorrattur</option></select>
+        </label>
+        <label>Raskusaste
+          <select id="severityFilter"><option value="all">Kõik juhtumid</option><option value="vigastus">Vigastatuga</option><option value="hukkunu">Hukkunuga</option></select>
+        </label>
+        <div class="radius-wrap"><div><span>Raadius</span><strong id="radiusValue">1,5 km</strong></div><input id="radius" type="range" min="0.5" max="5" value="1.5" step="0.5"></div>
+        <div class="upload">
+          <input id="csvInput" type="file" accept=".csv,text/csv" hidden>
+          <button id="uploadBtn" class="upload-btn"><span>＋</span> Laadi Transpordiameti CSV</button>
+          <small>CSV peab sisaldama koordinaate. Veerunimed tuvastatakse automaatselt levinud eestikeelsete nimetuste järgi.</small>
+        </div>
+      </aside>
+
+      <section class="map-wrap">
+        <div id="map"></div>
+        <div class="map-legend"><span><i class="dot injury"></i> Vigastatuga</span><span><i class="dot fatal"></i> Hukkunuga</span></div>
+      </section>
+
+      <aside class="panel insight-panel">
+        <span class="kicker">Mida andmed ütlevad?</span><h2 id="areaTitle">Tallinn · Tartu mnt</h2>
+        <div class="metric-grid">
+          <div><strong id="accidentCount">27</strong><span>õnnetust</span></div>
+          <div><strong id="victimCount">34</strong><span>kannatanut</span></div>
+          <div><strong id="fatalCount">1</strong><span>hukkunut</span></div>
+          <div><strong id="vulnerableShare">41%</strong><span>nõrgem liikleja</span></div>
+        </div>
+        <div class="divider"></div>
+        <h3>Olulisimad mustrid</h3>
+        <div id="insights" class="insights"></div>
+      </aside>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel wide">
+        <div class="panel-head"><div><span class="kicker">Millal risk kasvab?</span><h2>Õnnetused kellaaja järgi</h2></div><span class="pill">valitud piirkond</span></div>
+        <div id="bars" class="bars"></div>
+      </article>
+      <article class="panel methodology">
+        <span class="kicker">Aus metoodika</span><h2>Mida skoor tähendab?</h2>
+        <p>Ohuskoor ühendab juhtumite arvu, raskusastme, nõrgemate liiklejate osakaalu ja hiljutisuse. See ei ennusta konkreetset õnnetust ega asenda ametlikku liiklusohutuse hinnangut.</p>
+        <button id="methodBtn" class="secondary">Vaata arvutusloogikat</button>
+      </article>
+    </section>
+
+    <section class="source-note">
+      <div><span class="source-icon">↗</span></div>
+      <div><strong>Andmeallikas</strong><p>Kontseptsioon põhineb Transpordiameti ja Politsei- ja Piirivalveameti inimkannatanutega liiklusõnnetuste avaandmestikul. Näidisrakenduse sisseehitatud punktid on sünteetilised; CSV üleslaadimise järel arvutatakse vaade kasutaja failist.</p></div>
+    </section>
+  </main>
+
+  <dialog id="methodDialog"><button class="close" aria-label="Sulge">×</button><h2>Ohuskoori arvutus</h2><p><b>50%</b> juhtumite tihedus valitud raadiuses, <b>20%</b> hukkunuga juhtumid, <b>20%</b> jalakäijate ja jalgratturite osakaal ning <b>10%</b> viimase kahe aasta juhtumid. Tulemus normaliseeritakse skaalale 0–100.</p><p>Tootversioonis tuleks skoor kalibreerida liiklussageduse, teetüübi ja elanike arvuga, et tiheda liiklusega piirkondi mitte automaatselt ebaõiglaselt hinnata.</p></dialog>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
