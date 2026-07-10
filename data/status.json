@@ -1,7 +1,8 @@
 {
-  "generated_at": null,
-  "source_url": null,
+  "generated_at": "2026-07-10T08:56:34+00:00",
+  "source_url": "https://pilv.transpordiamet.ee/s/Iiee4OAYFq4lT1v/download?path=%2F&files=lo_2011_2026.csv",
   "dataset_page": "https://andmed.eesti.ee/datasets/inimkannatanutega-liiklusonnetuste-andmed",
-  "records": 0,
-  "latest_year": null
+  "records": 22082,
+  "skipped_without_coordinates": 1215,
+  "latest_year": 2026
 }
